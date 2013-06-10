@@ -2,12 +2,25 @@
 
 require_once '../code/Tocifier.php';
 
-$tocifier = new Tocifier();
-assert($tocifier->parseFile('test1'));
+// Check for invalid HTML
+$tocifier = new Tocifier(1234);
+assert(! $tocifier->process());
 
+$tocifier = new Tocifier('');
+assert(! $tocifier->process());
+
+// Check for valid HTML
+$tocifier = new Tocifier(@file_get_contents('test1'));
+assert($tocifier->process());
+
+// Check the augmented HTML
+$given = $tocifier->getHtml();
+$expected = file_get_contents('html1');
+assert($given == $expected);
+
+// Check the TOC
 ob_start();
 $tocifier->dumpTOC();
-$result = ob_get_clean();
-
-$expected = file_get_contents('result1');
-assert($result == $expected);
+$given = ob_get_clean();
+$expected = file_get_contents('toc1');
+assert($given == $expected);
