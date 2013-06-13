@@ -44,7 +44,7 @@ class Autotoc extends DataExtension {
         return $tocifier->getHtml();
     }
 
-    public function getTOC() {
+    public function getAutotoc() {
         $tocifier = $this->_getTocifier();
         if (! $tocifier)
             return null;
@@ -54,7 +54,6 @@ class Autotoc extends DataExtension {
             return '';
 
         return new ArrayData(array(
-            'Title'    => _t('Autotoc.TOC', 'Table of contents'),
             'Children' => self::_convertChildren($toc)
         ));
     }
