@@ -28,18 +28,17 @@ class Autotoc extends DataExtension {
 
     private function _getTocifier() {
         if (is_null($this->_tocifier)) {
-            $html = $this->owner->getField('Content');
-            $tocifier = new Tocifier($html);
+            $tocifier = new Tocifier($this->owner->Content);
             $this->_tocifier = $tocifier->process() ? $tocifier : false;
         }
 
         return $this->_tocifier;
     }
 
-    public function getContent() {
+    public function getAugmentedContent() {
         $tocifier = $this->_getTocifier();
         if (! $tocifier)
-            return $this->owner->getField('Content');
+            return $this->owner->Content;
 
         return $tocifier->getHtml();
     }
