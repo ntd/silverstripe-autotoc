@@ -62,6 +62,7 @@ class Tocifier {
             // Prepend the anchor
             $anchor = $doc->createElement('a');
             $anchor->setAttribute('id', $id);
+            $anchor->setAttribute('class', 'anchor');
             $h->parentNode->insertBefore($anchor, $h);
         }
 
