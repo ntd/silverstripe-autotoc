@@ -94,10 +94,15 @@ class Tocifier {
      * $tocifier = new Tocifier(@file_get_content($file));
      * </code>
      *
-     * @param String $html A chunk of valid HTML.
+     * @param String $html A chunk of valid HTML (UTF-8 encoded).
      */
     public function __construct($html) {
-        $this->_raw_html = $html;
+        // DOMDocument sucks ass (welcome to PHP, you poor shit). I
+        // must force the encoding at XML level to get the obvious...
+        if (is_string($html) && $html)
+            $this->_raw_html = "<?xml encoding=\"utf-8\" ?>\n" . $html;
+        else
+            $this->_raw_html = '';
     }
 
     /**
