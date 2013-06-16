@@ -72,7 +72,7 @@ class Tocifier {
     }
 
     private function _dumpBranch($node, $indent = '') {
-        echo $indent, $node['title'];
+        echo $indent . $node['title'] . "\n";
         if (isset($node['children'])) {
             foreach ($node['children'] as &$child)
                 $this->_dumpBranch($child, "$indent\t");
@@ -184,4 +184,4 @@ class Tocifier {
     public function dumpTOC() {
         $this->_dumpBranch($this->_tree);
     }
-};
+}
