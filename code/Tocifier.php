@@ -5,10 +5,13 @@ class Tocifier {
     // Prefix to prepend to every URL fragment
     static public $prefix = 'TOC-';
 
-    // The provided HTML augmented with anchor ids for proper navigation
+    // The original HTML
+    private $_raw_html = '';
+
+    // $_raw_html augmented with anchor ids for proper navigation
     private $_html = '';
 
-    // Hold the most recently generated tree
+    // The most recently generated TOC tree.
     private $_tree;
 
     // Array of references to the potential parents
@@ -97,12 +100,7 @@ class Tocifier {
      * @param String $html A chunk of valid HTML (UTF-8 encoded).
      */
     public function __construct($html) {
-        // DOMDocument sucks ass (welcome to PHP, you poor shit). I
-        // must force the encoding at XML level to get the obvious...
-        if (is_string($html) && $html)
-            $this->_raw_html = "<?xml encoding=\"utf-8\" ?>\n" . $html;
-        else
-            $this->_raw_html = '';
+        $this->_raw_html = $html;
     }
 
     /**
@@ -115,13 +113,19 @@ class Tocifier {
      * @return boolean true on success, false on errors.
      */
     public function process() {
-        // Check if HTML is a valid string
-        if (! is_string($this->_raw_html))
+        // Check if $this->_raw_html is valid
+        if (! is_string($this->_raw_html) || empty($this->_raw_html))
             return false;
+
+        // DOMDocument sucks ass (welcome to PHP, you poor shit). The
+        // encoding must be forced at XML level to get the obvious...
+        // This preamble is always prepended because multiple preambles
+        // *seem* to not be a problem.
+        $prefix = "<?xml encoding=\"utf-8\" ?>\n";
 
         // Parse the HTML into a DOMDocument tree
         $doc = new DOMDocument();
-        if (! @$doc->loadHTML($this->_raw_html))
+        if (! @$doc->loadHTML($prefix . $this->_raw_html))
             return false;
 
         // Process the doc
@@ -132,7 +136,7 @@ class Tocifier {
     /**
      * Get the TOC (Table Of Contents) from the provided HTML.
      *
-     * The HTML must be provided throught the feedHtml() method.
+     * The HTML must be provided throught the constructor.
      *
      * The TOC is represented in the form of:
      *
