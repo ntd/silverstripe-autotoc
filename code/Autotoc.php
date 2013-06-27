@@ -28,7 +28,7 @@ class Autotoc extends DataExtension {
 
     private function _getTocifier() {
         if (is_null($this->_tocifier)) {
-            $tocifier = new Tocifier($this->owner->Content);
+            $tocifier = new Tocifier($this->owner->obj('Content')->forTemplate());
             $this->_tocifier = $tocifier->process() ? $tocifier : false;
         }
 
