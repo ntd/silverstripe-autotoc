@@ -38,7 +38,7 @@ class Autotoc extends DataExtension {
     public function getAugmentedContent() {
         $tocifier = $this->_getTocifier();
         if (! $tocifier)
-            return $this->owner->Content;
+            return $this->owner->obj('Content')->forTemplate();
 
         return $tocifier->getHtml();
     }
