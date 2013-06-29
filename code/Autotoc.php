@@ -1,6 +1,6 @@
 <?php
 
-class Autotoc extends DataExtension {
+class Autotoc extends Extension {
 
     private $_tocifier;
 
@@ -26,19 +26,25 @@ class Autotoc extends DataExtension {
         return $list;
     }
 
+    private function _getHtml() {
+        $c = $this->owner;
+        $model = $c->customisedObject ? $c->customisedObject : $c->data();
+        return $model ? $model->obj('Content')->forTemplate() : null;
+    }
+
     private function _getTocifier() {
         if (is_null($this->_tocifier)) {
-            $tocifier = new Tocifier($this->owner->obj('Content')->forTemplate());
+            $tocifier = new Tocifier($this->_getHtml());
             $this->_tocifier = $tocifier->process() ? $tocifier : false;
         }
 
         return $this->_tocifier;
     }
 
-    public function getAugmentedContent() {
+    public function getContent() {
         $tocifier = $this->_getTocifier();
         if (! $tocifier)
-            return $this->owner->obj('Content')->forTemplate();
+            return $this->_getHtml();
 
         return $tocifier->getHtml();
     }

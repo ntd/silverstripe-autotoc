@@ -4,4 +4,4 @@
  * @package silverstripe-autotoc
  */
 
-Object::add_extension('Page', 'Autotoc');
+Object::add_extension('ContentController', 'Autotoc');

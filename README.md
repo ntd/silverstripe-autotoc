@@ -5,15 +5,16 @@ Generate the table of contents dynamically from *$Content*.
 
 This is basically a [SilverStripe 3](http://www.silverstripe.org/)
 module that extends the
-[DataObject](http://doc.silverstripe.org/framework/en/reference/dataobject)
-class by providing two additional tags:
+[ContentController](http://api.silverstripe.org/3.0/class-ContentController.html)
+class to provide:
 
-* *$Autotoc*: containing the table of contents dynamically created from
-  the content of the current page. The tree is provided as a mixture
-  of [ArrayData](http://api.silverstripe.org/3.0/class-ArrayData.html)
-  and [ArrayList](http://api.silverstripe.org/3.0/class-ArrayList.html),
+* the new *$Autotoc* tag, containing the table of contents dynamically
+  created from the content of the current page. The tree is provided as
+  a mixture of
+  [ArrayData](http://api.silverstripe.org/3.0/class-ArrayData.html) and
+  [ArrayList](http://api.silverstripe.org/3.0/class-ArrayList.html),
   ready to be consumed by templates.
-* *$AugmentedContent*: similar to *$Content* but augmented with anchors
+* overriding of the standard *$Content* tag, augmenting it with anchors
   (`<a>` elements with the _id_ attribute but without _href_) that adds
   proper destination targets to the links in *$Autotoc*.
 
