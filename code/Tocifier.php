@@ -117,15 +117,14 @@ class Tocifier {
         if (! is_string($this->_raw_html) || empty($this->_raw_html))
             return false;
 
-        // DOMDocument sucks ass (welcome to PHP, you poor shit). The
-        // encoding must be forced at XML level to get the obvious...
-        // This preamble is always prepended because multiple preambles
-        // *seem* to not be a problem.
-        $prefix = "<?xml encoding=\"utf-8\" ?>\n";
+        // DOMDocument sucks ass (welcome to PHP, you poor shit). I
+        // really don't understand why it is so difficult for loadHTML()
+        // to read a chunk of text in UTF-8...
+        $html = mb_convert_encoding($this->_raw_html, 'HTML-ENTITIES', 'UTF-8');
 
         // Parse the HTML into a DOMDocument tree
         $doc = new DOMDocument();
-        if (! @$doc->loadHTML($prefix . $this->_raw_html))
+        if (! @$doc->loadHTML($html))
             return false;
 
         // Process the doc
