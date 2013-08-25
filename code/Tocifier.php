@@ -27,6 +27,17 @@ class Tocifier {
         assert(false);
     }
 
+    private function _getPlainText(DOMElement $tag) {
+        // Work on a copy
+        $clone = $tag->cloneNode(true);
+
+        // Strip unneded tags (<small>)
+        while (($tag = $clone->getElementsByTagName('small')) && $tag->length)
+            $tag->item(0)->parentNode->removeChild($tag->item(0));
+
+        return $clone->textContent;
+    }
+
     private function &_newNode($id, $text, $level) {
         $node = array(
             'id'    => $id,
@@ -51,7 +62,7 @@ class Tocifier {
 
         $xpath = new DOMXPath($doc);
         foreach ($xpath->query('//h1|//h2|//h3|//h4|//h5|//h6') as $h) {
-            $text = $h->textContent;
+            $text = $this->_getPlainText($h);
             $level = (int) substr($h->tagName, 1);
             $id = self::$prefix . $n;
             ++$n;
