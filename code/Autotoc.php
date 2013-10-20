@@ -62,4 +62,8 @@ class Autotoc extends Extension {
             'Children' => self::_convertChildren($toc)
         ));
     }
+
+    public function getBodyAutotoc() {
+        return ' data-spy="scroll" data-target=".toc"';
+    }
 };
