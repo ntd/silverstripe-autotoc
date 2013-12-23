@@ -1,0 +1,22 @@
+{
+    "name": "entidi/silverstripe-autotoc",
+    "description": "A silverstripe module that generates the table of contents dynamically from $Content"
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "toc", "autotoc"],
+    "require": {
+        "silverstripe/framework": "3.*"
+    },
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Nicola Fontana",
+            "email": "ntd@entidi.it",
+            "homepage": "http://www.entidi.com/",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "http://dev.entidi.com/p/silverstripe-autotoc/issues/",
+        "source": "http://dev.entidi.com/p/silverstripe-autotoc/source/tree/master/"
+    }
+}
