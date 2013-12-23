@@ -18,5 +18,8 @@
     "support": {
         "issues": "http://dev.entidi.com/p/silverstripe-autotoc/issues/",
         "source": "http://dev.entidi.com/p/silverstripe-autotoc/source/tree/master/"
+    },
+    "suggest": {
+        "entidi/silverstrap": "A silverstripe theme with out of the box support to silverstripe-autotoc"
     }
 }
