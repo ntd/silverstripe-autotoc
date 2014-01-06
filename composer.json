@@ -1,5 +1,5 @@
 {
-    "name": "entidi/silverstripe-autotoc",
+    "name": "entidi/autotoc",
     "description": "A silverstripe module that generates the table of contents dynamically from $Content",
     "type": "silverstripe-module",
     "keywords": ["silverstripe", "toc", "autotoc"],
