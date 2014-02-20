@@ -29,7 +29,13 @@ class Autotoc extends Extension {
     private function _getHtml() {
         $c = $this->owner;
         $model = $c->customisedObject ? $c->customisedObject : $c->data();
-        return $model ? $model->obj('Content')->forTemplate() : null;
+        if (! $model)
+            return null;
+
+        if (! $model->hasField('Content'))
+            return null;
+
+        return $model->obj('Content')->forTemplate();
     }
 
     private function _getTocifier() {
