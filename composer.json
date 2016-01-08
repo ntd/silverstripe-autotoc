@@ -1,9 +1,9 @@
 {
     "name": "entidi/silverstripe-autotoc",
-    "description": "A silverstripe module that generates the table of contents dynamically from $Content",
+    "description": "Dynamically generate the table of contents from $Content",
     "type": "silverstripe-module",
     "homepage": "http://silverstripe.entidi.com/",
-    "keywords": ["silverstripe", "automatic", "content", "toc", "autotoc", "dataobject"],
+    "keywords": ["silverstripe", "contents", "toc", "autotoc", "index", "summary"],
     "license": "BSD-2-Clause",
     "authors": [
         {
@@ -20,6 +20,9 @@
     "require": {
         "silverstripe/framework": "~3.0"
     },
+    "require-dev": {
+        "phpunit/PHPUnit": "~3.7"
+    },
     "extra": {
         "installer-name": "autotoc",
         "screenshots": [
@@ -27,6 +30,6 @@
         ]
     },
     "suggest": {
-        "entidi/silverstrap": "A silverstripe theme with out of the box support to silverstripe-autotoc"
+        "entidi/silverstrap": "A theme that supports silverstripe-autotoc out of the box"
     }
 }

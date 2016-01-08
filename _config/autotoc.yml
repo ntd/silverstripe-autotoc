@@ -1,0 +1,10 @@
+---
+Name: 'autotoc'
+After:
+    - 'framework'
+Only:
+    classexists: 'ContentController'
+---
+ContentController:
+    extensions:
+        - 'Autotoc'

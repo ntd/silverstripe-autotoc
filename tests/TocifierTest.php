@@ -1,10 +1,9 @@
 <?php
 
-require_once '../code/Tocifier.php';
-
-class TocifierTest extends PHPUnit_Framework_TestCase {
-
-    public function testProcess() {
+class TocifierTest extends PHPUnit_Framework_TestCase
+{
+    public function testProcess()
+    {
         $tocifier = new Tocifier(1234);
         $this->assertFalse($tocifier->process());
 
@@ -21,15 +20,17 @@ class TocifierTest extends PHPUnit_Framework_TestCase {
         $this->assertTrue($tocifier->process());
     }
 
-    public function testHtml() {
-        $tocifier = new Tocifier(@file_get_contents('test1'));
+    public function testHtml()
+    {
+        $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test1'));
         $this->assertEquals($tocifier->getHtml(), '');
         $this->assertTrue($tocifier->process());
-        $this->assertStringEqualsFile('html1', $tocifier->getHtml());
+        $this->assertStringEqualsFile(__DIR__ . '/html1', $tocifier->getHtml());
     }
 
-    public function testTOC() {
-        $tocifier = new Tocifier(@file_get_contents('test1'));
+    public function testTOC()
+    {
+        $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test1'));
         $this->assertEquals($tocifier->getTOC(), array());
         $this->assertTrue($tocifier->process());
         $this->assertNotNull($tocifier->getTOC());
@@ -37,6 +38,6 @@ class TocifierTest extends PHPUnit_Framework_TestCase {
         ob_start();
         $tocifier->dumpTOC();
         $returned = ob_get_clean();
-        $this->assertStringEqualsFile('toc1', $returned);
+        $this->assertStringEqualsFile(__DIR__ . '/toc1', $returned);
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
-class Tocifier {
-
+class Tocifier
+{
     // Prefix to prepend to every URL fragment
-    static public $prefix = 'TOC-';
+    public static $prefix = 'TOC-';
 
     // The original HTML
     private $_raw_html = '';
@@ -18,27 +18,32 @@ class Tocifier {
     private $_dangling = array();
 
 
-    private function &_getParent($level) {
+    private function &_getParent($level)
+    {
         while (--$level >= 0) {
-            if (isset($this->_dangling[$level]))
+            if (isset($this->_dangling[$level])) {
                 return $this->_dangling[$level];
+            }
         }
         // This should never be reached
         assert(false);
     }
 
-    private function _getPlainText(DOMElement $tag) {
+    private function _getPlainText(DOMElement $tag)
+    {
         // Work on a copy
         $clone = $tag->cloneNode(true);
 
         // Strip unneded tags (<small>)
-        while (($tag = $clone->getElementsByTagName('small')) && $tag->length)
+        while (($tag = $clone->getElementsByTagName('small')) && $tag->length) {
             $tag->item(0)->parentNode->removeChild($tag->item(0));
+        }
 
         return $clone->textContent;
     }
 
-    private function &_newNode($id, $text, $level) {
+    private function &_newNode($id, $text, $level)
+    {
         $node = array(
             'id'    => $id,
             'title' => $text
@@ -47,8 +52,9 @@ class Tocifier {
         // Clear the trailing dangling parents after level, if any
         end($this->_dangling);
         $last = key($this->_dangling);
-        for ($n = $level+1; $n <= $last; ++$n)
+        for ($n = $level+1; $n <= $last; ++$n) {
             unset($this->_dangling[$n]);
+        }
 
         // Consider this node a potential dangling parent
         $this->_dangling[$level] =& $node;
@@ -56,7 +62,8 @@ class Tocifier {
         return $node;
     }
 
-    private function _processDocument($doc) {
+    private function _processDocument($doc)
+    {
         $this->_tree =& $this->_newNode(self::$prefix, '', 0);
         $n = 1;
 
@@ -85,11 +92,13 @@ class Tocifier {
                                    $doc->saveHTML($body));
     }
 
-    private function _dumpBranch($node, $indent = '') {
+    private function _dumpBranch($node, $indent = '')
+    {
         echo $indent . $node['title'] . "\n";
         if (isset($node['children'])) {
-            foreach ($node['children'] as &$child)
+            foreach ($node['children'] as &$child) {
                 $this->_dumpBranch($child, "$indent\t");
+            }
         }
     }
 
@@ -110,7 +119,8 @@ class Tocifier {
      *
      * @param String $html A chunk of valid HTML (UTF-8 encoded).
      */
-    public function __construct($html) {
+    public function __construct($html)
+    {
         $this->_raw_html = $html;
     }
 
@@ -123,10 +133,12 @@ class Tocifier {
      *
      * @return boolean true on success, false on errors.
      */
-    public function process() {
+    public function process()
+    {
         // Check if $this->_raw_html is valid
-        if (! is_string($this->_raw_html) || empty($this->_raw_html))
+        if (! is_string($this->_raw_html) || empty($this->_raw_html)) {
             return false;
+        }
 
         // DOMDocument sucks ass (welcome to PHP, you poor shit). I
         // really don't understand why it is so difficult for loadHTML()
@@ -135,8 +147,9 @@ class Tocifier {
 
         // Parse the HTML into a DOMDocument tree
         $doc = new DOMDocument();
-        if (! @$doc->loadHTML($html))
+        if (! @$doc->loadHTML($html)) {
             return false;
+        }
 
         // Process the doc
         $this->_processDocument($doc);
@@ -180,7 +193,8 @@ class Tocifier {
      * @return Array An array representing the TOC. A valid array is
      *               always returned.
      */
-    public function getTOC() {
+    public function getTOC()
+    {
         return isset($this->_tree['children']) ? $this->_tree['children'] : array();
     }
 
@@ -193,14 +207,16 @@ class Tocifier {
      *
      * @return String The augmented HTML.
      */
-    public function getHtml() {
+    public function getHtml()
+    {
         return $this->_html;
     }
 
     /**
      * Dump the TOC to stdout for debugging purpose.
      */
-    public function dumpTOC() {
+    public function dumpTOC()
+    {
         $this->_dumpBranch($this->_tree);
     }
 }
