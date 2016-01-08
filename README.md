@@ -70,7 +70,7 @@ In a more SilverStripe template way, this can be seen as:
             $Title
             $Children[]
 
-The `Autotoc.ss` and `AutotocItem.ss` shows a way to represent the whole
+The `Autotoc.ss` and `AutotocItem.ss` show a way to represent the whole
 table of content tree in a recursive way. The format used is
 intentionally compatible with the [Bootstrap](http://getbootstrap.com/)
 [navlist](http://getbootstrap.com/components/#nav) components, so it can
