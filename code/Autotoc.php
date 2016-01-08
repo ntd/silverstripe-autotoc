@@ -30,6 +30,35 @@ class Autotoc extends Extension
         return $list;
     }
 
+    private function _contentField()
+    {
+        $field = $this->owner->config()->get('content_field');
+        return $field ? $field : 'Content';
+    }
+
+    /**
+     * Provide content_field customization on a class basis.
+     *
+     * Override the default setOwner() method so, when valorized, I can
+     * enhance the (possibly custom) content field with anchors. I did
+     * not find a better way to override a field other than directly
+     * substituting it with setField().
+     *
+     * @param Object $owner      The owner instance
+     * @param string $base_class The name of the base class this
+     *                           extension is applied to
+     */
+    public function setOwner($owner, $base_class = null)
+    {
+        parent::setOwner($owner, $base_class);
+
+        if ($owner) {
+            $tocifier = $this->_getTocifier();
+            $content  = $tocifier ? $tocifier->getHtml() : $this->_getHtml();
+            $owner->setField($this->_contentField(), $content);
+        }
+    }
+
     private function _getHtml()
     {
         $c = $this->owner;
@@ -38,11 +67,12 @@ class Autotoc extends Extension
             return null;
         }
 
-        if (! $model->hasField('Content')) {
+        $field = $this->_contentField();
+        if (! $model->hasField($field)) {
             return null;
         }
 
-        return $model->obj('Content')->forTemplate();
+        return $model->obj($field)->forTemplate();
     }
 
     private function _getTocifier()
@@ -53,16 +83,6 @@ class Autotoc extends Extension
         }
 
         return $this->_tocifier;
-    }
-
-    public function getContent()
-    {
-        $tocifier = $this->_getTocifier();
-        if (! $tocifier) {
-            return $this->_getHtml();
-        }
-
-        return $tocifier->getHtml();
     }
 
     public function getAutotoc()
