@@ -1,5 +1,6 @@
 silverstripe-autotoc
 ====================
+[![Latest Stable Version](https://poser.pugx.org/entidi/silverstripe-autotoc/v/stable)](https://packagist.org/packages/entidi/silverstripe-autotoc)
 
 Generate the table of contents dynamically from *$Content* or from any
 HTML field specified in the `content_field` YAML property of a
