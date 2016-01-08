@@ -2,7 +2,6 @@
 
 class Autotoc extends Extension
 {
-
     private $_tocifier;
 
 

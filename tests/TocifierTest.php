@@ -4,7 +4,6 @@ require_once '../code/Tocifier.php';
 
 class TocifierTest extends PHPUnit_Framework_TestCase
 {
-
     public function testProcess()
     {
         $tocifier = new Tocifier(1234);

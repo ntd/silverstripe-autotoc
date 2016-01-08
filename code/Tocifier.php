@@ -2,7 +2,6 @@
 
 class Tocifier
 {
-
     // Prefix to prepend to every URL fragment
     public static $prefix = 'TOC-';
 
