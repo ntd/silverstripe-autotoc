@@ -68,7 +68,9 @@ class Tocifier
         $n = 1;
 
         $xpath = new DOMXPath($doc);
-        foreach ($xpath->query('//h1|//h2|//h3|//h4|//h5|//h6') as $h) {
+        $query = '//h1[not(@data-hide-from-toc)]|//h2[not(@data-hide-from-toc)]|//h3[not(@data-hide-from-toc)]|//h4[not(@data-hide-from-toc)]|//h5[not(@data-hide-from-toc)]|//h6[not(@data-hide-from-toc)]';
+
+        foreach ($xpath->query($query) as $h) {
             $text = $this->_getPlainText($h);
             $level = (int) substr($h->tagName, 1);
             $id = self::$prefix . $n;
