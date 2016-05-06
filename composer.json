@@ -18,6 +18,7 @@
         "source": "http://dev.entidi.com/p/silverstripe-autotoc/source/tree/master/"
     },
     "require": {
+        "php": ">=5.3.6",
         "silverstripe/framework": "~3.0"
     },
     "require-dev": {
