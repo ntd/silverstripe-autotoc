@@ -40,4 +40,19 @@ class TocifierTest extends PHPUnit_Framework_TestCase
         $returned = ob_get_clean();
         $this->assertStringEqualsFile(__DIR__ . '/toc1', $returned);
     }
+
+    public function testDataHideFromTOC()
+    {
+        $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test2'));
+        $this->assertEquals($tocifier->getHtml(), '');
+        $this->assertTrue($tocifier->process());
+
+        // Check the augmented HTML is equal to the original one
+        $this->assertStringEqualsFile(__DIR__ . '/test2', $tocifier->getHtml());
+
+        ob_start();
+        $tocifier->dumpTOC();
+        $returned = ob_get_clean();
+        $this->assertEquals("\n", $returned);
+    }
 }

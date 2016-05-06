@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Tocifier is intentionally decoupled from SilverStripe to be able to
+ * test it without needing to put all the test infrastructure up.
+ */
 class Tocifier
 {
     // Prefix to prepend to every URL fragment
@@ -68,7 +72,7 @@ class Tocifier
         $n = 1;
 
         $xpath = new DOMXPath($doc);
-        $query = '//h1[not(@data-hide-from-toc)]|//h2[not(@data-hide-from-toc)]|//h3[not(@data-hide-from-toc)]|//h4[not(@data-hide-from-toc)]|//h5[not(@data-hide-from-toc)]|//h6[not(@data-hide-from-toc)]';
+        $query = '//*[translate(name(), "123456", "......") = "h."][not(@data-hide-from-toc)]';
 
         foreach ($xpath->query($query) as $h) {
             $text = $this->_getPlainText($h);
@@ -90,7 +94,7 @@ class Tocifier
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
-        $this->_html = str_replace(array('<body>', '</body>'), '',
+        $this->_html = str_replace(array("<body>\n", '</body>'), '',
                                    $doc->saveHTML($body));
     }
 
