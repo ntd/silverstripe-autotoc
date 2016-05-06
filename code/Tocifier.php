@@ -94,7 +94,7 @@ class Tocifier
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
-        $this->_html = str_replace(array('<body>', '</body>'), '',
+        $this->_html = str_replace(array("<body>\n", '</body>'), '',
                                    $doc->saveHTML($body));
     }
 
