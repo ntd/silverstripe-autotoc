@@ -72,7 +72,7 @@ class Tocifier
         $n = 1;
 
         $xpath = new DOMXPath($doc);
-        $query = '//h1[not(@data-hide-from-toc)]|//h2[not(@data-hide-from-toc)]|//h3[not(@data-hide-from-toc)]|//h4[not(@data-hide-from-toc)]|//h5[not(@data-hide-from-toc)]|//h6[not(@data-hide-from-toc)]';
+        $query = '//*[translate(name(), "123456", "......") = "h."][not(@data-hide-from-toc)]';
 
         foreach ($xpath->query($query) as $h) {
             $text = $this->_getPlainText($h);
