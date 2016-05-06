@@ -30,6 +30,10 @@ class Autotoc extends Extension
         return $list;
     }
 
+    /**
+     * Get the field name to be used as content.
+     * @return string
+     */
     private function _contentField()
     {
         $field = $this->owner->config()->get('content_field');
@@ -44,9 +48,9 @@ class Autotoc extends Extension
      * not find a better way to override a field other than directly
      * substituting it with setField().
      *
-     * @param Object $owner      The owner instance
-     * @param string $base_class The name of the base class this
-     *                           extension is applied to
+     * @param Object      $owner      The owner instance
+     * @param string|null $base_class The name of the base class this
+     *                                extension is applied to
      */
     public function setOwner($owner, $base_class = null)
     {
@@ -59,6 +63,9 @@ class Autotoc extends Extension
         }
     }
 
+    /**
+     * @return string
+     */
     private function _getHtml()
     {
         $c = $this->owner;
@@ -75,6 +82,15 @@ class Autotoc extends Extension
         return $model->obj($field)->forTemplate();
     }
 
+    /**
+     * Return the internal Tocifier instance bound to this Autotoc.
+     *
+     * If not preset, try to create and execute a new one. On failure
+     * (e.g. because of malformed content) no further attempts will be
+     * made.
+     *
+     * @return Tocifier|false
+     */
     private function _getTocifier()
     {
         if (is_null($this->_tocifier)) {
@@ -102,8 +118,11 @@ class Autotoc extends Extension
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getBodyAutotoc()
     {
         return ' data-spy="scroll" data-target=".toc"';
     }
-};
+}
