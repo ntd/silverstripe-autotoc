@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Tocifier is intentionally decoupled from SilverStripe to be able to
+ * test it without needing to put all the test infrastructure up.
+ */
 class Tocifier
 {
     // Prefix to prepend to every URL fragment
