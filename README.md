@@ -41,4 +41,5 @@ Other documentation
 * [AutoTOC format](docs/en/format.md)
 * [Contributing](CONTRIBUTING.md)
 * [BSD license](LICENSE.md)
+* [ChangeLog](CHANGELOG.md)
 * [Support](docs/en/support.md)
