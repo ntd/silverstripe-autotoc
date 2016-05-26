@@ -22,6 +22,12 @@ class Tocifier
     private $_dangling = array();
 
 
+    /**
+     * Get the TOC node closest to a given nesting level.
+     *
+     * @param  int $level  The requested nesting level.
+     * @return array
+     */
     private function &_getParent($level)
     {
         while (--$level >= 0) {
@@ -33,6 +39,12 @@ class Tocifier
         assert(false);
     }
 
+    /**
+     * Get the plain text content from a DOM element.
+     *
+     * @param  DOMElement $tag  The DOM element to inspect.
+     * @return string
+     */
     private function _getPlainText(DOMElement $tag)
     {
         // Work on a copy
@@ -46,6 +58,14 @@ class Tocifier
         return $clone->textContent;
     }
 
+    /**
+     * Create a new TOC node.
+     *
+     * @param  string $id     Node id, used for anchoring
+     * @param  string $text   Title text
+     * @param  int    $level  The nesting level of the node
+     * @return array
+     */
     private function &_newNode($id, $text, $level)
     {
         $node = array(
@@ -66,6 +86,11 @@ class Tocifier
         return $node;
     }
 
+    /**
+     * Process the specific document.
+     *
+     * @param  DOMDocument $doc  The document to process.
+     */
     private function _processDocument($doc)
     {
         $this->_tree =& $this->_newNode(self::$prefix, '', 0);
@@ -83,7 +108,9 @@ class Tocifier
             // Build the tree
             $parent =& $this->_getParent($level);
             $node =& $this->_newNode($id, $text, $level);
-            isset($parent['children']) or $parent['children'] = array();
+            if (! isset($parent['children'])) {
+                $parent['children'] = array();
+            }
             $parent['children'][] =& $node;
 
             // Prepend the anchor
@@ -98,6 +125,12 @@ class Tocifier
                                    $doc->saveHTML($body));
     }
 
+    /**
+     * Debug function for dumping a TOC node and its children.
+     *
+     * @param  array  $node    The TOC node to dump
+     * @param  string $indent  Indentation string.
+     */
     private function _dumpBranch($node, $indent = '')
     {
         echo $indent . $node['title'] . "\n";
@@ -123,7 +156,7 @@ class Tocifier
      * $tocifier = new Tocifier(@file_get_content($file));
      * </code>
      *
-     * @param String $html A chunk of valid HTML (UTF-8 encoded).
+     * @param string $html A chunk of valid HTML (UTF-8 encoded).
      */
     public function __construct($html)
     {
