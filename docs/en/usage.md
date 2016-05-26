@@ -17,7 +17,7 @@ will be extended out of the box) to provide:
   but without _href_) to add proper destinations for the links.
 
 You will need to modify your templates for embedding the *$Autotoc* tag
-(see [AutoTOC format](docs/en/format) for the gory details) or directly
+(see [AutoTOC format](format.md) for the gory details) or directly
 include the sample template, e.g.:
 
     <% include Autotoc %>
