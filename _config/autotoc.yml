@@ -1,9 +1,13 @@
 ---
-Name: 'autotoc'
+Name: autotoc
 After:
-    - 'framework'
+    - framework
+---
+Autotoc:
+    augment_callback: [ Tocifier, prependAnchor ]
+---
 Only:
-    classexists: 'ContentController'
+    classexists: ContentController
 ---
 ContentController:
     extensions:

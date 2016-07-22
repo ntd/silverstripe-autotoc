@@ -12,7 +12,7 @@ class Tocifier
     // The original HTML
     private $_raw_html = '';
 
-    // $_raw_html augmented with anchor ids for proper navigation
+    // $_raw_html augmented for proper navigation
     private $_html = '';
 
     // The most recently generated TOC tree.
@@ -20,6 +20,9 @@ class Tocifier
 
     // Array of references to the potential parents
     private $_dangling = array();
+
+    // Callback for augmenting a single DOMElement
+    private $_augment_callback;
 
 
     /**
@@ -113,11 +116,7 @@ class Tocifier
             }
             $parent['children'][] =& $node;
 
-            // Prepend the anchor
-            $anchor = $doc->createElement('a');
-            $anchor->setAttribute('id', $id);
-            $anchor->setAttribute('class', 'anchor');
-            $h->parentNode->insertBefore($anchor, $h);
+            call_user_func($this->_augment_callback, $doc, $h, $id);
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
@@ -161,6 +160,29 @@ class Tocifier
     public function __construct($html)
     {
         $this->_raw_html = $html;
+        // Default augmenting method (kept for backward compatibility)
+        $this->setAugmentCallback(array(__CLASS__, 'prependAnchor'));
+    }
+
+    /**
+     * Change the augment method used by this Tocifier instance.
+     *
+     * By default the HTML is augmented prepending an anchor before
+     * every valid destination. This behavior can be changed by using
+     * Tocifier::setId() (that directly sets the ID on the destination
+     * elements) or by providing your own callback.
+     *
+     * The signature of the callback to pass in should be compatible
+     * with:
+     *
+     *     function callback(DOMDocument $dom, DOMElement $element, $id)
+     *
+     * @param callable $callback  The new function to call for
+     *                            augmenting DOMElement
+     */
+    public function setAugmentCallback($callback)
+    {
+        $this->_augment_callback = $callback;
     }
 
     /**
@@ -238,7 +260,7 @@ class Tocifier
     }
 
     /**
-     * Get the HTML augmented with anchors for proper navigation.
+     * Get the HTML augmented for proper navigation.
      *
      * The HTML must be provided throught the feedHtml() method.
      * The returned string is cached, so subsequent calls will return
@@ -257,5 +279,53 @@ class Tocifier
     public function dumpTOC()
     {
         $this->_dumpBranch($this->_tree);
+    }
+
+    /**
+     * Augment a DOMElement by prepending an anchor.
+     *
+     * An HTML fragment such as:
+     *
+     *     <h1>First</h2>
+     *     <h2>Second</h1>
+     *
+     * will become:
+     *
+     *     <a id="TOC-1" class="anchor"></a><h1>First</h2>
+     *     <a id="TOC-2" class="anchor"></a><h2>Second</h1>
+     *
+     * @param DOMDocument $dom      The DOM owning $element
+     * @param DOMElement  $element  The element to augment
+     * @param string      $id       The destination ID
+     */
+    public static function prependAnchor(DOMDocument $dom, DOMElement $element, $id)
+    {
+        $anchor = $dom->createElement('a');
+        $anchor->setAttribute('id', $id);
+        $anchor->setAttribute('class', 'anchor');
+        $element->parentNode->insertBefore($anchor, $element);
+    }
+
+    /**
+     * Augment a DOMElement by setting its ID.
+     *
+     * An HTML fragment such as:
+     *
+     *     <h1>First</h2>
+     *     <h2>Second</h1>
+     *
+     * will become:
+     *
+     *     <h1 id="TOC-1" class="anchor">First</h2>
+     *     <h2 id="TOC-2" class="anchor">Second</h1>
+     *
+     * @param DOMDocument $dom      The DOM owning $element
+     * @param DOMElement  $element  The element to augment
+     * @param string      $id       The destination ID
+     */
+    public static function setId(DOMDocument $dom, DOMElement $element, $id)
+    {
+        $element->setAttribute('id', $id);
+        $element->setAttribute('class', 'anchor');
     }
 }

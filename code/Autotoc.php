@@ -2,6 +2,14 @@
 
 class Autotoc extends Extension
 {
+    /**
+     * @config
+     * Callable to be used for augmenting a DOMElement.
+     * Look at Tocifier::prependAnchor and Tocifier::setId as
+     * implementation samples.
+     */
+    private static $augment_callback;
+
     private $_tocifier;
 
 
@@ -95,6 +103,12 @@ class Autotoc extends Extension
     {
         if (is_null($this->_tocifier)) {
             $tocifier = new Tocifier($this->_getHtml());
+            // TODO: not sure this is the best approach... maybe I
+            // should look to $this->owner->dataRecord before
+            $config = Config::inst()->get(__CLASS__, 'augment_callback');
+            // Take only the first two, because SilverStripe merges
+            // arrays with the same key instead of overwriting them
+            $tocifier->setAugmentCallback(array_slice($config, 0, 2));
             $this->_tocifier = $tocifier->process() ? $tocifier : false;
         }
 
@@ -117,7 +131,6 @@ class Autotoc extends Extension
             'Children' => self::_convertChildren($toc)
         ));
     }
-
     /**
      * @return string
      */
