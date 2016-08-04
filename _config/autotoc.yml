@@ -4,7 +4,7 @@ After:
     - framework
 ---
 Autotoc:
-    augment_callback: [ Tocifier, prependAnchor ]
+    augment_callback: [ Tocifier, SetId ]
 ---
 Only:
     classexists: ContentController
