@@ -13,8 +13,7 @@ will be extended out of the box) to provide:
   [ArrayList](http://api.silverstripe.org/3.0/class-ArrayList.html),
   ready to be consumed by templates.
 * the override of the subject field (i.e. *$Content* by default) that
-  will be augmented with anchors (`<a>` elements with the _id_ attribute
-  but without _href_) to add proper destinations for the links.
+  will be augmented to add proper destinations for the links.
 
 You will need to modify your templates for embedding the *$Autotoc* tag
 (see [AutoTOC format](format.md) for the gory details) or directly
@@ -34,3 +33,17 @@ name in the `content_field` property of a YAML config file, e.g.:
 
 The *$Autotoc* tag will automatically become available in the above
 controllers.
+
+By default the HTML is augmented with anchors (`<a>` elements with the
+_id_ attribute but without _href_) prepended to the destination
+elements. See `Tocifier::prependAnchor` for the exact implementation.
+
+This is kept mainly for backward compatibility. A better approach would
+be to directly set the id of the destination element. If you want to
+enable this behavior, just change the augment callback to
+`Tocifier::setId` by adding the following to your YAML config:
+
+    Tocifier:
+        augment_callback: [ Tocifier, setId ]
+
+You can leverage this option to enable your own callbacks too.

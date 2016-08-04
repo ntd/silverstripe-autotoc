@@ -20,12 +20,23 @@ class TocifierTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($tocifier->process());
     }
 
-    public function testHtml()
+    public function testPrependAnchor()
     {
         $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test1'));
         $this->assertEquals($tocifier->getHtml(), '');
         $this->assertTrue($tocifier->process());
+
+        // The default augmenting method should already be prependAnchor
         $this->assertStringEqualsFile(__DIR__ . '/html1', $tocifier->getHtml());
+    }
+
+    public function testSetId()
+    {
+        $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test1'));
+        $tocifier->setAugmentCallback(array('Tocifier', 'setId'));
+        $this->assertEquals($tocifier->getHtml(), '');
+        $this->assertTrue($tocifier->process());
+        $this->assertStringEqualsFile(__DIR__ . '/html2', $tocifier->getHtml());
     }
 
     public function testTOC()
