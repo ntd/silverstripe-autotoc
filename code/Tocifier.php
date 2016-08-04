@@ -84,7 +84,7 @@ class Tocifier
         }
 
         // Consider this node a potential dangling parent
-        $this->_dangling[$level] =& $node;
+        $this->_dangling[$level] = & $node;
 
         return $node;
     }
@@ -96,7 +96,7 @@ class Tocifier
      */
     private function _processDocument($doc)
     {
-        $this->_tree =& $this->_newNode(self::$prefix, '', 0);
+        $this->_tree = & $this->_newNode(self::$prefix, '', 0);
         $n = 1;
 
         $xpath = new DOMXPath($doc);
@@ -105,16 +105,16 @@ class Tocifier
         foreach ($xpath->query($query) as $h) {
             $text = $this->_getPlainText($h);
             $level = (int) substr($h->tagName, 1);
-            $id = self::$prefix . $n;
+            $id = self::$prefix.$n;
             ++$n;
 
             // Build the tree
-            $parent =& $this->_getParent($level);
-            $node =& $this->_newNode($id, $text, $level);
-            if (! isset($parent['children'])) {
+            $parent = & $this->_getParent($level);
+            $node = & $this->_newNode($id, $text, $level);
+            if (!isset($parent['children'])) {
                 $parent['children'] = array();
             }
-            $parent['children'][] =& $node;
+            $parent['children'][] = & $node;
 
             call_user_func($this->_augment_callback, $doc, $h, $id);
         }
@@ -132,7 +132,7 @@ class Tocifier
      */
     private function _dumpBranch($node, $indent = '')
     {
-        echo $indent . $node['title'] . "\n";
+        echo $indent.$node['title']."\n";
         if (isset($node['children'])) {
             foreach ($node['children'] as &$child) {
                 $this->_dumpBranch($child, "$indent\t");
@@ -197,7 +197,7 @@ class Tocifier
     public function process()
     {
         // Check if $this->_raw_html is valid
-        if (! is_string($this->_raw_html) || empty($this->_raw_html)) {
+        if (!is_string($this->_raw_html) || empty($this->_raw_html)) {
             return false;
         }
 
@@ -208,7 +208,7 @@ class Tocifier
 
         // Parse the HTML into a DOMDocument tree
         $doc = new DOMDocument();
-        if (! @$doc->loadHTML($html)) {
+        if (!@$doc->loadHTML($html)) {
             return false;
         }
 
