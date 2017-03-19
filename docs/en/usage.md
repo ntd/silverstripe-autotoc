@@ -34,16 +34,16 @@ name in the `content_field` property of a YAML config file, e.g.:
 The *$Autotoc* tag will automatically become available in the above
 controllers.
 
-By default the HTML is augmented with anchors (`<a>` elements with the
-_id_ attribute but without _href_) prepended to the destination
-elements. See `Tocifier::prependAnchor` for the exact implementation.
+By default the HTML is augmented by setting the _id_ attribute directly on the
+destination element (see `Tocifier::setId` for the exact implementation). Any
+preexisting _id_ will be overwritten.
 
-This is kept mainly for backward compatibility. A better approach would
-be to directly set the id of the destination element. If you want to
-enable this behavior, just change the augment callback to
-`Tocifier::setId` by adding the following to your YAML config:
+The old behavior instead was to inject anchors (`<a>` elements with the _id_
+attribute but without _href_) just before the destination element. It is still
+possible to enable it by changing the augment callback to
+`Tocifier::prependAnchor`. Just add the following to your YAML config:
 
     Tocifier:
-        augment_callback: [ Tocifier, setId ]
+        augment_callback: [ Tocifier, prependAnchor ]
 
 You can leverage this option to enable your own callbacks too.
