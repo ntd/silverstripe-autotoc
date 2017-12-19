@@ -1,6 +1,13 @@
 <?php
 
-class Autotoc extends Extension
+namespace eNTiDi\Autotoc;
+
+use eNTiDi\Autotoc;
+use SilverStripe\Core\Extension;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\View\ArrayData;
+
+class AutotocExtension extends Extension
 {
     /**
      * @config
@@ -15,10 +22,10 @@ class Autotoc extends Extension
 
     private static function _convertNode($node)
     {
-        $data = new ArrayData(array(
+        $data = ArrayData::create([
             'Id'    => $node['id'],
             'Title' => $node['title']
-        ));
+        ]);
 
         if (isset($node['children'])) {
             $data->setField('Children', self::_convertChildren($node['children']));
@@ -29,7 +36,7 @@ class Autotoc extends Extension
 
     private static function _convertChildren($children)
     {
-        $list = new ArrayList;
+        $list = ArrayList::create();
 
         foreach ($children as $child) {
             $list->push(self::_convertNode($child));
@@ -127,9 +134,9 @@ class Autotoc extends Extension
             return '';
         }
 
-        return new ArrayData(array(
+        return ArrayData::create([
             'Children' => self::_convertChildren($toc)
-        ));
+        ]);
     }
     /**
      * @return string
