@@ -1,5 +1,11 @@
 <?php
 
+namespace eNTiDi\Autotoc;
+
+use DOMDocument;
+use DOMElement;
+use DOMXPath;
+
 /*
  * Tocifier is intentionally decoupled from SilverStripe to be able to
  * test it without needing to put all the test infrastructure up.

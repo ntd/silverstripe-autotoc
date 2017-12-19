@@ -1,5 +1,10 @@
 <?php
 
+namespace eNTiDi\Autotoc\Tests;
+
+use eNTiDi\Autotoc\Tocifier;
+use PHPUnit_Framework_TestCase;
+
 class TocifierTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
@@ -33,7 +38,7 @@ class TocifierTest extends PHPUnit_Framework_TestCase
     public function testSetId()
     {
         $tocifier = new Tocifier(file_get_contents(__DIR__ . '/test1'));
-        $tocifier->setAugmentCallback(array('Tocifier', 'setId'));
+        $tocifier->setAugmentCallback(array('\eNTiDi\Autotoc\Tocifier', 'setId'));
         $this->assertEquals($tocifier->getHtml(), '');
         $this->assertTrue($tocifier->process());
         $this->assertStringEqualsFile(__DIR__ . '/html2', $tocifier->getHtml());
