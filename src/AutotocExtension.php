@@ -20,7 +20,7 @@ class AutotocExtension extends Extension
     private $_tocifier;
 
 
-    private static function _convertNode($node)
+    private static function convertNode($node)
     {
         $data = ArrayData::create([
             'Id'    => $node['id'],
@@ -28,18 +28,18 @@ class AutotocExtension extends Extension
         ]);
 
         if (isset($node['children'])) {
-            $data->setField('Children', self::_convertChildren($node['children']));
+            $data->setField('Children', self::convertChildren($node['children']));
         }
 
         return $data;
     }
 
-    private static function _convertChildren($children)
+    private static function convertChildren($children)
     {
         $list = ArrayList::create();
 
         foreach ($children as $child) {
-            $list->push(self::_convertNode($child));
+            $list->push(self::convertNode($child));
         }
 
         return $list;
@@ -49,7 +49,7 @@ class AutotocExtension extends Extension
      * Get the field name to be used as content.
      * @return string
      */
-    private function _contentField()
+    private function contentField()
     {
         $field = $this->owner->config()->get('content_field');
         return $field ? $field : 'Content';
@@ -72,16 +72,16 @@ class AutotocExtension extends Extension
         parent::setOwner($owner, $base_class);
 
         if ($owner) {
-            $tocifier = $this->_getTocifier();
-            $content  = $tocifier ? $tocifier->getHtml() : $this->_getHtml();
-            $owner->setField($this->_contentField(), $content);
+            $tocifier = $this->getTocifier();
+            $content  = $tocifier ? $tocifier->getHtml() : $this->getHtml();
+            $owner->setField($this->contentField(), $content);
         }
     }
 
     /**
      * @return string
      */
-    private function _getHtml()
+    private function getHtml()
     {
         $c = $this->owner;
         $model = $c->customisedObject ? $c->customisedObject : $c->data();
@@ -89,7 +89,7 @@ class AutotocExtension extends Extension
             return null;
         }
 
-        $field = $this->_contentField();
+        $field = $this->contentField();
         if (! $model->hasField($field)) {
             return null;
         }
@@ -106,25 +106,25 @@ class AutotocExtension extends Extension
      *
      * @return Tocifier|false
      */
-    private function _getTocifier()
+    private function getTocifier()
     {
-        if (is_null($this->_tocifier)) {
-            $tocifier = new Tocifier($this->_getHtml());
+        if (is_null($this->tocifier)) {
+            $tocifier = new Tocifier($this->getHtml());
             // TODO: not sure this is the best approach... maybe I
             // should look to $this->owner->dataRecord before
             $config = Config::inst()->get(__CLASS__, 'augment_callback');
             // Take only the first two, because SilverStripe merges
             // arrays with the same key instead of overwriting them
             $tocifier->setAugmentCallback(array_slice($config, 0, 2));
-            $this->_tocifier = $tocifier->process() ? $tocifier : false;
+            $this->tocifier = $tocifier->process() ? $tocifier : false;
         }
 
-        return $this->_tocifier;
+        return $this->tocifier;
     }
 
     public function getAutotoc()
     {
-        $tocifier = $this->_getTocifier();
+        $tocifier = $this->getTocifier();
         if (! $tocifier) {
             return null;
         }
@@ -135,7 +135,7 @@ class AutotocExtension extends Extension
         }
 
         return ArrayData::create([
-            'Children' => self::_convertChildren($toc)
+            'Children' => self::convertChildren($toc)
         ]);
     }
     /**

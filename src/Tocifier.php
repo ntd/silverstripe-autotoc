@@ -16,19 +16,19 @@ class Tocifier
     public static $prefix = 'TOC-';
 
     // The original HTML
-    private $_raw_html = '';
+    private $raw_html = '';
 
-    // $_raw_html augmented for proper navigation
-    private $_html = '';
+    // $raw_html augmented for proper navigation
+    private $html = '';
 
     // The most recently generated TOC tree.
-    private $_tree;
+    private $tree;
 
     // Array of references to the potential parents
-    private $_dangling = array();
+    private $dangling = array();
 
     // Callback for augmenting a single DOMElement
-    private $_augment_callback;
+    private $augment_callback;
 
 
     /**
@@ -37,11 +37,11 @@ class Tocifier
      * @param  int $level  The requested nesting level.
      * @return array
      */
-    private function &_getParent($level)
+    private function &getParent($level)
     {
         while (--$level >= 0) {
-            if (isset($this->_dangling[$level])) {
-                return $this->_dangling[$level];
+            if (isset($this->dangling[$level])) {
+                return $this->dangling[$level];
             }
         }
         // This should never be reached
@@ -54,7 +54,7 @@ class Tocifier
      * @param  DOMElement $tag  The DOM element to inspect.
      * @return string
      */
-    private function _getPlainText(DOMElement $tag)
+    private function getPlainText(DOMElement $tag)
     {
         // Work on a copy
         $clone = $tag->cloneNode(true);
@@ -75,7 +75,7 @@ class Tocifier
      * @param  int    $level  The nesting level of the node
      * @return array
      */
-    private function &_newNode($id, $text, $level)
+    private function &newNode($id, $text, $level)
     {
         $node = array(
             'id'    => $id,
@@ -83,14 +83,14 @@ class Tocifier
         );
 
         // Clear the trailing dangling parents after level, if any
-        end($this->_dangling);
-        $last = key($this->_dangling);
+        end($this->dangling);
+        $last = key($this->dangling);
         for ($n = $level+1; $n <= $last; ++$n) {
-            unset($this->_dangling[$n]);
+            unset($this->dangling[$n]);
         }
 
         // Consider this node a potential dangling parent
-        $this->_dangling[$level] = & $node;
+        $this->dangling[$level] = & $node;
 
         return $node;
     }
@@ -100,34 +100,33 @@ class Tocifier
      *
      * @param  DOMDocument $doc  The document to process.
      */
-    private function _processDocument($doc)
+    private function processDocument($doc)
     {
-        $this->_tree = & $this->_newNode(self::$prefix, '', 0);
+        $this->tree = & $this->newNode(self::$prefix, '', 0);
         $n = 1;
 
         $xpath = new DOMXPath($doc);
         $query = '//*[translate(name(), "123456", "......") = "h."][not(@data-hide-from-toc)]';
 
         foreach ($xpath->query($query) as $h) {
-            $text = $this->_getPlainText($h);
+            $text = $this->getPlainText($h);
             $level = (int) substr($h->tagName, 1);
             $id = self::$prefix.$n;
             ++$n;
 
             // Build the tree
-            $parent = & $this->_getParent($level);
-            $node = & $this->_newNode($id, $text, $level);
+            $parent = & $this->getParent($level);
+            $node = & $this->newNode($id, $text, $level);
             if (!isset($parent['children'])) {
                 $parent['children'] = array();
             }
             $parent['children'][] = & $node;
 
-            call_user_func($this->_augment_callback, $doc, $h, $id);
+            call_user_func($this->augment_callback, $doc, $h, $id);
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
-        $this->_html = str_replace(array("<body>\n", '</body>'), '',
-                                   $doc->saveHTML($body));
+        $this->html = str_replace(array("<body>\n", '</body>'), '', $doc->saveHTML($body));
     }
 
     /**
@@ -136,12 +135,12 @@ class Tocifier
      * @param  array  $node    The TOC node to dump
      * @param  string $indent  Indentation string.
      */
-    private function _dumpBranch($node, $indent = '')
+    private function dumpBranch($node, $indent = '')
     {
         echo $indent.$node['title']."\n";
         if (isset($node['children'])) {
             foreach ($node['children'] as &$child) {
-                $this->_dumpBranch($child, "$indent\t");
+                $this->dumpBranch($child, "$indent\t");
             }
         }
     }
@@ -165,7 +164,7 @@ class Tocifier
      */
     public function __construct($html)
     {
-        $this->_raw_html = $html;
+        $this->raw_html = $html;
         // Default augmenting method (kept for backward compatibility)
         $this->setAugmentCallback(array(__CLASS__, 'prependAnchor'));
     }
@@ -188,7 +187,7 @@ class Tocifier
      */
     public function setAugmentCallback($callback)
     {
-        $this->_augment_callback = $callback;
+        $this->augment_callback = $callback;
     }
 
     /**
@@ -202,15 +201,15 @@ class Tocifier
      */
     public function process()
     {
-        // Check if $this->_raw_html is valid
-        if (!is_string($this->_raw_html) || empty($this->_raw_html)) {
+        // Check if $this->raw_html is valid
+        if (!is_string($this->raw_html) || empty($this->raw_html)) {
             return false;
         }
 
         // DOMDocument sucks ass (welcome to PHP, you poor shit). I
         // really don't understand why it is so difficult for loadHTML()
         // to read a chunk of text in UTF-8...
-        $html = mb_convert_encoding($this->_raw_html, 'HTML-ENTITIES', 'UTF-8');
+        $html = mb_convert_encoding($this->raw_html, 'HTML-ENTITIES', 'UTF-8');
 
         // Parse the HTML into a DOMDocument tree
         $doc = new DOMDocument();
@@ -219,7 +218,7 @@ class Tocifier
         }
 
         // Process the doc
-        $this->_processDocument($doc);
+        $this->processDocument($doc);
         return true;
     }
 
@@ -262,7 +261,7 @@ class Tocifier
      */
     public function getTOC()
     {
-        return isset($this->_tree['children']) ? $this->_tree['children'] : array();
+        return isset($this->tree['children']) ? $this->tree['children'] : array();
     }
 
     /**
@@ -276,7 +275,7 @@ class Tocifier
      */
     public function getHtml()
     {
-        return $this->_html;
+        return $this->html;
     }
 
     /**
@@ -284,7 +283,7 @@ class Tocifier
      */
     public function dumpTOC()
     {
-        $this->_dumpBranch($this->_tree);
+        $this->dumpBranch($this->tree);
     }
 
     /**
