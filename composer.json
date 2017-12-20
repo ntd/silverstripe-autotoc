@@ -1,5 +1,5 @@
 {
-    "name": "entidi/autotoc",
+    "name": "entidi/silverstripe-autotoc",
     "type": "silverstripe-vendormodule",
     "description": "Dynamically generate the table of contents from $Content",
     "homepage": "http://silverstripe.entidi.com/",
