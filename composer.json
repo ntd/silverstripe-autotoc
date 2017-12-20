@@ -25,7 +25,11 @@
         "source": "http://dev.entidi.com/p/silverstripe-autotoc/source/tree/master/"
     },
     "require": {
-        "silverstripe/framework": "~4.0"
+        "silverstripe/framework": "^4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "silverstripe/recipe-core": "^1.0"
     },
     "autoload": {
         "psr-4": {
