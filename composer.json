@@ -41,16 +41,6 @@
     "extra": {
         "screenshots": [
             "http://silverstripe.entidi.com/assets/autotoc.jpeg"
-        ],
-        "project-files-installed": [
-            ".htaccess",
-            "index.php",
-            "install-frameworkmissing.html",
-            "install.php",
-            "mysite/.htaccess",
-            "mysite/_config.php",
-            "mysite/_config/mysite.yml",
-            "web.config"
         ]
     },
     "suggest": {
