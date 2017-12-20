@@ -31,7 +31,6 @@
         "phpunit/phpunit": "^5.7",
         "silverstripe/recipe-core": "^1.0"
     },
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "eNTiDi\\Autotoc\\": "src/",
@@ -45,5 +44,7 @@
     },
     "suggest": {
         "entidi/silverstrap": "A theme that supports silverstripe-autotoc out of the box"
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
