@@ -1,14 +1,12 @@
 ---
 Name: autotoc
-After:
-    - framework
 ---
-Autotoc:
-    augment_callback: [ Tocifier, SetId ]
+eNTiDi\Autotoc\AutotocExtension:
+  augment_callback: [ Tocifier, SetId ]
 ---
 Only:
-    classexists: ContentController
+  classexists: SilverStripe\CMS\Controllers\ContentController
 ---
-ContentController:
-    extensions:
-        - 'Autotoc'
+SilverStripe\CMS\Controllers\ContentController:
+  extensions:
+    - eNTiDi\Autotoc\AutotocExtension
