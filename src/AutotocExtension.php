@@ -2,7 +2,8 @@
 
 namespace eNTiDi\Autotoc;
 
-use eNTiDi\Autotoc;
+use eNTiDi\Autotoc\Tocifier;
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Extension;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\View\ArrayData;
@@ -17,7 +18,7 @@ class AutotocExtension extends Extension
      */
     private static $augment_callback;
 
-    private $_tocifier;
+    private $tocifier;
 
 
     private static function convertNode($node)
