@@ -2,7 +2,7 @@
 Name: autotoc
 ---
 eNTiDi\Autotoc\AutotocExtension:
-  augment_callback: [ Tocifier, SetId ]
+  augment_callback: [ eNTiDi\Autotoc\Tocifier, SetId ]
 ---
 Only:
   classexists: SilverStripe\CMS\Controllers\ContentController
