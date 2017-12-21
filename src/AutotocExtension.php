@@ -110,7 +110,10 @@ class AutotocExtension extends Extension
     private function getTocifier()
     {
         if (is_null($this->tocifier)) {
-            $tocifier = Injector::inst()->create('Tocifier');
+            $tocifier = Injector::inst()->create(
+                'eNTiDi\Autotoc\Tocifier',
+                $this->getHtml()
+            );
             // TODO: not sure this is the best approach... maybe I
             // should look to $this->owner->dataRecord before
             $config = Config::inst()->get(__CLASS__, 'augment_callback');
