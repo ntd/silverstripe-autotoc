@@ -2,9 +2,9 @@
 
 namespace eNTiDi\Autotoc;
 
-use eNTiDi\Autotoc\Tocifier;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Core\Extension;
+use SilverStripe\Core\Injector\Injector;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\View\ArrayData;
 
@@ -23,7 +23,7 @@ class AutotocExtension extends Extension
 
     private static function convertNode($node)
     {
-        $data = ArrayData::create([
+        $data = new ArrayData([
             'Id'    => $node['id'],
             'Title' => $node['title']
         ]);
@@ -37,7 +37,7 @@ class AutotocExtension extends Extension
 
     private static function convertChildren($children)
     {
-        $list = ArrayList::create();
+        $list = new ArrayList();
 
         foreach ($children as $child) {
             $list->push(self::convertNode($child));
@@ -110,7 +110,7 @@ class AutotocExtension extends Extension
     private function getTocifier()
     {
         if (is_null($this->tocifier)) {
-            $tocifier = new Tocifier($this->getHtml());
+            $tocifier = Injector::inst()->create('Tocifier');
             // TODO: not sure this is the best approach... maybe I
             // should look to $this->owner->dataRecord before
             $config = Config::inst()->get(__CLASS__, 'augment_callback');
@@ -135,7 +135,7 @@ class AutotocExtension extends Extension
             return '';
         }
 
-        return ArrayData::create([
+        return new ArrayData([
             'Children' => self::convertChildren($toc)
         ]);
     }
