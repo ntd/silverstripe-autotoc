@@ -11,28 +11,19 @@ page or, more generally, from any HTML field.
 Installation
 ------------
 
-If you use [composer](https://getcomposer.org/), you could just run the
-following command:
-
     composer require entidi/silverstripe-autotoc
 
-To manually install it you should unpack or copy `silverstripe-autotoc`
-into your SilverStripe root directory, rename it to `autotoc` and do a
-`?flush`.
+Manual installation is probably possible but not really tested.
 
 This module can be used without the CMS.
 
 Testing
 -------
 
-Part of this project (the _Tocifier_ class) is intentionally decoupled
-from SilverStripe so it can be tested without pulling in all the
-framework.
+Basically it boils down to the following commands:
 
-From the module root directory you can trigger the testing by calling
-`phpunit` (that must be previously installed on your system):
-
-    phpunit --bootstrap tests/Bootstrap.php tests/
+    composer update
+    vendor/bin/phpunit
 
 Other documentation
 -------------------

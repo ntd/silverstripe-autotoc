@@ -126,7 +126,7 @@ class Tocifier
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
-        $this->html = str_replace(array("<body>\n", '</body>'), '', $doc->saveHTML($body));
+        $this->html = str_replace(array("<body>\n", '<body>', '</body>'), '', $doc->saveHTML($body));
     }
 
     /**
@@ -165,8 +165,7 @@ class Tocifier
     public function __construct($html)
     {
         $this->raw_html = $html;
-        // Default augmenting method (kept for backward compatibility)
-        $this->setAugmentCallback(array(__CLASS__, 'prependAnchor'));
+        $this->setAugmentCallback(array(static::class, 'setId'));
     }
 
     /**
