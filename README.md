@@ -8,14 +8,14 @@ silverstripe-autotoc
 Automatically generate the table of contents from the *Content* of a
 page or, more generally, from any HTML field.
 
+This module can be used without the CMS.
+
 Installation
 ------------
 
     composer require entidi/silverstripe-autotoc
 
 Manual installation is probably possible but not really tested.
-
-This module can be used without the CMS.
 
 Testing
 -------
