@@ -8,38 +8,30 @@ silverstripe-autotoc
 Automatically generate the table of contents from the *Content* of a
 page or, more generally, from any HTML field.
 
+This module can be used without the CMS.
+
 Installation
 ------------
 
-If you use [composer](https://getcomposer.org/), you could just run the
-following command:
-
     composer require entidi/silverstripe-autotoc
 
-To manually install it you should unpack or copy `silverstripe-autotoc`
-into your SilverStripe root directory, rename it to `autotoc` and do a
-`?flush`.
-
-This module can be used without the CMS.
+Manual installation is probably possible but not really tested.
 
 Testing
 -------
 
-Part of this project (the _Tocifier_ class) is intentionally decoupled
-from SilverStripe so it can be tested without pulling in all the
-framework.
+Basically it boils down to the following commands:
 
-From the module root directory you can trigger the testing by calling
-`phpunit` (that must be previously installed on your system):
-
-    phpunit --bootstrap tests/Bootstrap.php tests/
+    composer update
+    vendor/bin/phpunit
 
 Other documentation
 -------------------
 
 * [Usage](docs/en/usage.md)
-* [AutoTOC format](docs/en/format.md)
+* [Autotoc format](docs/en/format.md)
 * [Contributing](CONTRIBUTING.md)
+* [Code of Conduct](https://docs.silverstripe.org/en/contributing/code_of_conduct)
 * [BSD license](LICENSE.md)
 * [ChangeLog](CHANGELOG.md)
 * [Support](docs/en/support.md)

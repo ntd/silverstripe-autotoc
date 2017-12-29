@@ -8,7 +8,7 @@ pseudocode:
     <CHILDREN> = ArrayList( <ITEM> )
     <ITEM> = ArrayData( $Id, $Title [, $Children <- <CHILDREN> ] )
 
-In a more SilverStripe template way, this can be seen as:
+In a more SilverStripe way, this can be seen as:
 
     $Autotoc
         $Children[]
@@ -16,9 +16,9 @@ In a more SilverStripe template way, this can be seen as:
             $Title
             $Children[]
 
-The `Autotoc.ss` and `AutotocItem.ss` show a way to represent the whole
-table of content tree in a recursive way. The format used there is
-intentionally compatible with the
+`Autotoc.ss` and `AutotocItem.ss` show a way to render the whole table of
+contents by leveraging mutual recursion between two templates.  The format used
+there is intentionally compatible with the
 [Bootstrap navlist](http://getbootstrap.com/components/#nav) component,
 so it can be used and it will be properly handled by the
 [Silverstrap](http://dev.entidi.com/p/silverstrap/) theme.
