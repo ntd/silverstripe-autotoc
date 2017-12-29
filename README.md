@@ -29,8 +29,9 @@ Other documentation
 -------------------
 
 * [Usage](docs/en/usage.md)
-* [AutoTOC format](docs/en/format.md)
+* [Autotoc format](docs/en/format.md)
 * [Contributing](CONTRIBUTING.md)
+* [Code of Conduct](https://docs.silverstripe.org/en/contributing/code_of_conduct)
 * [BSD license](LICENSE.md)
 * [ChangeLog](CHANGELOG.md)
 * [Support](docs/en/support.md)
