@@ -18,21 +18,6 @@ class AutotocTest extends SapphireTest
         TestObject::add_extension('eNTiDi\Autotoc\Autotoc');
     }
 
-    private function emptyTestObject()
-    {
-        $obj          = new TestObject;
-        $obj->Content = '';
-        $obj->Test2   = '';
-        return $obj;
-    }
-    private function populatedTestObject()
-    {
-        $obj          = new TestObject;
-        $obj->Content = file_get_contents(__DIR__.'/test1');
-        $obj->Test2   = file_get_contents(__DIR__.'/test2');
-        return $obj;
-    }
-
     public function testBodyAutotoc()
     {
         $obj = new TestObject;
