@@ -184,7 +184,6 @@ class Autotoc extends DataExtension
         }
 
         return $model->getField($field);
-        return $model->obj($field)->forTemplate();
     }
 
     /**
