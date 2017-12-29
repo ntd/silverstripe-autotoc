@@ -26,6 +26,10 @@ class Hacks extends ViewableData
         ];
     }
 
+    /**
+     * @param string $method
+     * @param \Closure $callback
+     */
     public static function addCallbackMethodToInstance($instance, $method, $callback)
     {
         // hasMethod() trigger the population of $extra_methods
