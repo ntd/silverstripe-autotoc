@@ -12,7 +12,7 @@ class Hacks extends ViewableData
      * Similar to addWrapperMethod() but made public and working on
      * custom instances to allow to inject custom wrappers.
      *
-     * @param string $instance
+     * @param ViewableData $instance
      * @param string $method
      * @param string $wrap
      */
@@ -27,6 +27,12 @@ class Hacks extends ViewableData
     }
 
     /**
+     * Add callback as a method.
+     *
+     * Similar to addCallbackMethod() but made public and working on
+     * custom instances to allow to inject custom callbacks.
+     *
+     * @param ViewableData $instance
      * @param string $method
      * @param \Closure $callback
      */
