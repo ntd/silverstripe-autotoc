@@ -39,8 +39,8 @@ name in the `content_field` property, e.g.:
     AuthorHandler:
         content_field: 'Biography'
 
-The *$Autotoc* tag will automatically become available in the above
-controllers.
+WARNING: the content field is not expected to be changed dynamically, so it
+should be properly set **before** the first instantiation of the bound object.
 
 Augmenting algorithm
 --------------------
