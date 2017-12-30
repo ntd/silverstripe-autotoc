@@ -88,7 +88,7 @@ class Autotoc extends DataExtension
         if ($owner) {
             Hacks::addCallbackMethodToInstance(
                 $owner,
-                'getContent',
+                'get'.$this->contentField(),
                 function () use ($owner) {
                     return $owner->getContentField();
                 }
@@ -103,7 +103,7 @@ class Autotoc extends DataExtension
      * (e.g. because of malformed content) no further attempts will be
      * made.
      *
-     * @param DataObject $owner
+     * @param \SilverStripe\ORM\DataObject $owner
      * @return Tocifier|false|null
      */
     private static function getTocifier($owner)
@@ -122,7 +122,7 @@ class Autotoc extends DataExtension
                 $callback = Config::inst()->get(self::class, 'augment_callback');
             }
             $tocifier->setAugmentCallback(explode('::', $callback));
-            if (! $tocifier->process()) {
+            if (!$tocifier->process()) {
                 $tocifier = false;
             }
             self::$tocifiers[$owner] = $tocifier;
@@ -150,7 +150,7 @@ class Autotoc extends DataExtension
     public function getAutotoc()
     {
         $tocifier = self::getTocifier($this->owner);
-        if (! $tocifier) {
+        if (!$tocifier) {
             return null;
         }
 
@@ -171,20 +171,19 @@ class Autotoc extends DataExtension
     public function getOriginalContentField()
     {
         $model = $this->owner->getCustomisedObj();
-        if (! $model) {
+        if (!$model) {
             $model = $this->owner->data();
         }
-        if (! $model) {
+        if (!$model) {
             return null;
         }
 
         $field = $this->contentField();
-        if (! $model->hasField($field)) {
+        if (!$model->hasField($field)) {
             return null;
         }
 
         return $model->getField($field);
-        return $model->obj($field)->forTemplate();
     }
 
     /**
