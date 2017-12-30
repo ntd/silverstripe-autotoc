@@ -18,7 +18,7 @@ class TocifierTest extends PHPUnit_Framework_TestCase
         $tocifier = new Tocifier(null);
         $this->assertFalse($tocifier->process());
 
-        $tocifier = new Tocifier(array('1234'));
+        $tocifier = new Tocifier(['1234']);
         $this->assertFalse($tocifier->process());
 
         $tocifier = new Tocifier('1234');
@@ -30,7 +30,7 @@ class TocifierTest extends PHPUnit_Framework_TestCase
         $tocifier = new Tocifier(file_get_contents(__DIR__.'/test1'));
         $this->assertEquals('', $tocifier->getHtml());
 
-        $tocifier->setAugmentCallback(array('\eNTiDi\Autotoc\Tocifier', 'prependAnchor'));
+        $tocifier->setAugmentCallback(['\eNTiDi\Autotoc\Tocifier', 'prependAnchor']);
         $this->assertTrue($tocifier->process());
         $this->assertStringEqualsFile(__DIR__.'/html1', $tocifier->getHtml());
     }
@@ -48,7 +48,7 @@ class TocifierTest extends PHPUnit_Framework_TestCase
     public function testTOC()
     {
         $tocifier = new Tocifier(file_get_contents(__DIR__.'/test1'));
-        $this->assertEquals(array(), $tocifier->getTOC());
+        $this->assertEquals([], $tocifier->getTOC());
         $this->assertTrue($tocifier->process());
         $this->assertNotNull($tocifier->getTOC());
 

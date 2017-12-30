@@ -25,7 +25,7 @@ class Tocifier
     private $tree;
 
     // Array of references to the potential parents
-    private $dangling = array();
+    private $dangling = [];
 
     // Callback for augmenting a single DOMElement
     private $augment_callback;
@@ -77,10 +77,10 @@ class Tocifier
      */
     private function &newNode($id, $text, $level)
     {
-        $node = array(
+        $node = [
             'id'    => $id,
             'title' => $text
-        );
+        ];
 
         // Clear the trailing dangling parents after level, if any
         end($this->dangling);
@@ -118,7 +118,7 @@ class Tocifier
             $parent = & $this->getParent($level);
             $node = & $this->newNode($id, $text, $level);
             if (!isset($parent['children'])) {
-                $parent['children'] = array();
+                $parent['children'] = [];
             }
             $parent['children'][] = & $node;
 
@@ -126,7 +126,7 @@ class Tocifier
         }
 
         $body = $doc->getElementsByTagName('body')->item(0);
-        $this->html = str_replace(array("<body>\n", '<body>', '</body>'), '', $doc->saveHTML($body));
+        $this->html = str_replace(["<body>\n", '<body>', '</body>'], '', $doc->saveHTML($body));
     }
 
     /**
@@ -165,7 +165,7 @@ class Tocifier
     public function __construct($html)
     {
         $this->raw_html = $html;
-        $this->setAugmentCallback(array(static::class, 'setId'));
+        $this->setAugmentCallback([static::class, 'setId']);
     }
 
     /**
@@ -228,30 +228,39 @@ class Tocifier
      *
      * The TOC is represented in the form of:
      *
-     * <code>
-     * array(
-     *     array('id'       => 'TOC-1',
-     *           'title'    => 'Item 1',
-     *           'children' => array(
-     *               array('id'       => 'TOC-2',
+     *     [
+     *         [
+     *             'id'       => 'TOC-1',
+     *             'title'    => 'Item 1',
+     *             'children' => [
+     *                 [
+     *                     'id'       => 'TOC-2',
      *                     'title'    => 'Subitem 1.1'
-     *               ),
-     *               array('id'       => 'TOC-3',
+     *                 ], [
+     *                     'id'       => 'TOC-3',
      *                     'title'    => 'Subitem 1.2',
-     *                     'children' => array(
-     *                         array('id'      => 'TOC-4',
-     *                               'title    => 'Subsubitem 1.2.1'
-     *     ))))),
-     *     array('id'       => 'TOC-5,
-     *           'title'    => 'Item 2',
-     *           'children' => array(
-     *               array('id'       => 'TOC-6',
+     *                     'children' => [
+     *                         [
+     *                             'id'      => 'TOC-4',
+     *                             'title    => 'Subsubitem 1.2.1'
+     *                         ]
+     *                     ]
+     *                 ]
+     *             ],
+     *         ], [
+     *             'id'       => 'TOC-5,
+     *             'title'    => 'Item 2',
+     *             'children' => [
+     *                 [
+     *                     'id'       => 'TOC-6',
      *                     'title'    => 'Subitem 2.1'
-     *               ),
-     *               array('id'       => 'TOC-7',
+     *                 ], [
+     *                     'id'       => 'TOC-7',
      *                     'title'    => 'Subitem 2.2'
-     * ))));
-     * </code>
+     *                 ]
+     *             ]
+     *         ]
+     *     ]
      *
      * The TOC is cached, so subsequent calls will return the same tree.
      *
@@ -260,7 +269,7 @@ class Tocifier
      */
     public function getTOC()
     {
-        return isset($this->tree['children']) ? $this->tree['children'] : array();
+        return isset($this->tree['children']) ? $this->tree['children'] : [];
     }
 
     /**
