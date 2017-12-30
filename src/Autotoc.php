@@ -88,7 +88,7 @@ class Autotoc extends DataExtension
         if ($owner) {
             Hacks::addCallbackMethodToInstance(
                 $owner,
-                'getContent',
+                'get'.$this->contentField(),
                 function() use ($owner) {
                     return $owner->getContentField();
                 }

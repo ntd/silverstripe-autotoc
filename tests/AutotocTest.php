@@ -107,4 +107,34 @@ class AutotocTest extends SapphireTest
         $this->assertEquals(5, $toc->Children->count());
         $this->assertStringEqualsFile(__DIR__.'/html2', $obj->Content);
     }
+
+    public function testOverriding()
+    {
+        $html = file_get_contents(__DIR__.'/test1');
+
+        // The content field is not expected to be changed dynamically:
+        // we need to set it *before* creating the test instance
+        Config::inst()->update(TestObject::class, 'content_field', 'Something');
+        $obj = new TestObject;
+        $obj->Content = $html;
+        $obj->Test2   = $html;
+        $this->assertEquals($html, $obj->Content);
+        $this->assertEquals($html, $obj->Test2);
+
+        Config::inst()->update(TestObject::class, 'content_field', 'Content');
+        $obj = new TestObject;
+        $obj->Content = $html;
+        $obj->Test2   = $html;
+        $this->assertNotEquals($html, $obj->Content);
+        $this->assertEquals($html, $obj->Test2);
+
+        Config::inst()->update(TestObject::class, 'content_field', 'Test2');
+        $obj = new TestObject;
+        $obj->Content = $html;
+        $obj->Test2   = $html;
+        // The overriding works on a class basis, so the Content field
+        // will still be overriden
+        $this->assertNotEquals($html, $obj->Content);
+        $this->assertNotEquals($html, $obj->Test2);
+    }
 }
